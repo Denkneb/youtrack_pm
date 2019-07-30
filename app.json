@@ -8,8 +8,8 @@
         "homepage": "https://github.com/Denkneb/youtrack_pm.git",
         "support": "https://github.com/Denkneb/youtrack_pm/issues"
     },
-    "name": "youtrack_pm",
-    "nameSlug": "youtrack_pm",
+    "name": "youtrackPM",
+    "nameSlug": "youtrack-pm",
     "classFile": "YoutrackPmApp.ts",
     "description": "Integration with Youtrack for report a messages @"
 }
