@@ -57,7 +57,7 @@ export class YoutrackPmAppCommand implements ISlashCommand {
                 }
                 return await this.sendNotifyMessage(
                         context, modify, `Bot @bot_youtrack is error, ${context.getSender().username}!`);
-            case 'issue start':
+            case 'issue_start':
                 await persis.removeByAssociation(assoc);
                 this.res = await http.get(`${ this.hostYoutrackPM }/youtrack_issue_start?id=${ context.getSender().id }`);
                 if (this.res.statusCode === 200) {
@@ -66,7 +66,7 @@ export class YoutrackPmAppCommand implements ISlashCommand {
                 }
                 return await this.sendNotifyMessage(
                         context, modify, `Bot @bot_youtrack is error, ${context.getSender().username}!`);
-            case 'issue stop':
+            case 'issue_stop':
                 await persis.createWithAssociation(data, assoc);
                 this.res = await http.get(`${ this.hostYoutrackPM }/youtrack_issue_stop?id=${ context.getSender().id }`);
                 if (this.res.statusCode === 200) {
@@ -105,7 +105,7 @@ export class YoutrackPmAppCommand implements ISlashCommand {
         const action = context.getArguments()[0].toLowerCase();
         console.log(action);
 
-        if (action === 'start' || action === 'status' || action === 'stop' || action === 'token') {
+        if (action === 'start' || action === 'stop' || action === 'issue_start' || action === 'issue_stop' || action === 'status' || action === 'token') {
             return await this.handleStatusArgOnly(context, read, modify, http, persis);
         } else if (action !== 'token') {
             return await this.sendNotifyMessage(context, modify,
