@@ -57,6 +57,24 @@ export class YoutrackPmAppCommand implements ISlashCommand {
                 }
                 return await this.sendNotifyMessage(
                         context, modify, `Bot @bot_youtrack is error, ${context.getSender().username}!`);
+            case 'issue start':
+                await persis.removeByAssociation(assoc);
+                this.res = await http.get(`${ this.hostYoutrackPM }/youtrack_issue_start?id=${ context.getSender().id }`);
+                if (this.res.statusCode === 200) {
+                    return await this.sendNotifyMessage(
+                        context, modify, `${JSON.parse(this.res.content)["data"]["massage"]}, ${context.getSender().username}!`);
+                }
+                return await this.sendNotifyMessage(
+                        context, modify, `Bot @bot_youtrack is error, ${context.getSender().username}!`);
+            case 'issue stop':
+                await persis.createWithAssociation(data, assoc);
+                this.res = await http.get(`${ this.hostYoutrackPM }/youtrack_issue_stop?id=${ context.getSender().id }`);
+                if (this.res.statusCode === 200) {
+                    return await this.sendNotifyMessage(
+                        context, modify, `${JSON.parse(this.res.content)["data"]["massage"]}, ${context.getSender().username}!`);
+                }
+                return await this.sendNotifyMessage(
+                        context, modify, `Bot @bot_youtrack is error, ${context.getSender().username}!`);
             case 'status':
                 this.res = await http.get(`${ this.hostYoutrackPM }/youtrack_status?id=${ context.getSender().id }`);
                 if (this.res.statusCode === 200) {
