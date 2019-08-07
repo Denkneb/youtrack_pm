@@ -44,7 +44,7 @@ export class YoutrackPmAppCommand implements ISlashCommand {
                 this.res = await http.get(`${ this.hostYoutrackPM }/youtrack_start?id=${ context.getSender().id }`);
                 if (this.res.statusCode === 200) {
                     return await this.sendNotifyMessage(
-                        context, modify, `Bot @bot_youtrack is running, ${context.getSender().username}!`);
+                        context, modify, `${JSON.parse(this.res.content)["data"]["massage"]}, ${context.getSender().username}!`);
                 }
                 return await this.sendNotifyMessage(
                         context, modify, `Bot @bot_youtrack is error, ${context.getSender().username}!`);
@@ -53,20 +53,15 @@ export class YoutrackPmAppCommand implements ISlashCommand {
                 this.res = await http.get(`${ this.hostYoutrackPM }/youtrack_stop?id=${ context.getSender().id }`);
                 if (this.res.statusCode === 200) {
                     return await this.sendNotifyMessage(
-                        context, modify, `Bot @bot_youtrack is stopped, ${context.getSender().username}!`);
+                        context, modify, `${JSON.parse(this.res.content)["data"]["massage"]}, ${context.getSender().username}!`);
                 }
                 return await this.sendNotifyMessage(
                         context, modify, `Bot @bot_youtrack is error, ${context.getSender().username}!`);
             case 'status':
                 this.res = await http.get(`${ this.hostYoutrackPM }/youtrack_status?id=${ context.getSender().id }`);
                 if (this.res.statusCode === 200) {
-                    if (JSON.parse(this.res.content)["data"]["is_active"] === true) {
-                        return await this.sendNotifyMessage(
-                            context, modify, `Bot @bot_youtrack is running, ${context.getSender().username}!`);
-                    } else {
-                        return await this.sendNotifyMessage(
-                            context, modify, `Bot @bot_youtrack is stopped, ${context.getSender().username}!`);
-                    }
+                    return await this.sendNotifyMessage(
+                        context, modify, `${JSON.parse(this.res.content)["data"]["massage"]}, ${context.getSender().username}!`);
                 }
                 return await this.sendNotifyMessage(
                     context, modify, `Bot @bot_youtrack is error, ${context.getSender().username}!`);
