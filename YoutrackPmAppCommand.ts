@@ -56,25 +56,7 @@ export class YoutrackPmAppCommand implements ISlashCommand {
                         context, modify, `${JSON.parse(this.res.content)["data"]["massage"]}, ${context.getSender().username}!`);
                 }
                 return await this.sendNotifyMessage(
-                        context, modify, `Bot @bot_youtrack is error, ${context.getSender().username}!`);
-            case 'issue_start':
-                await persis.removeByAssociation(assoc);
-                this.res = await http.get(`${ this.hostYoutrackPM }/youtrack_issue_start?id=${ context.getSender().id }`);
-                if (this.res.statusCode === 200) {
-                    return await this.sendNotifyMessage(
-                        context, modify, `${JSON.parse(this.res.content)["data"]["massage"]}, ${context.getSender().username}!`);
-                }
-                return await this.sendNotifyMessage(
-                        context, modify, `Bot @bot_youtrack is error, ${context.getSender().username}!`);
-            case 'issue_stop':
-                await persis.createWithAssociation(data, assoc);
-                this.res = await http.get(`${ this.hostYoutrackPM }/youtrack_issue_stop?id=${ context.getSender().id }`);
-                if (this.res.statusCode === 200) {
-                    return await this.sendNotifyMessage(
-                        context, modify, `${JSON.parse(this.res.content)["data"]["massage"]}, ${context.getSender().username}!`);
-                }
-                return await this.sendNotifyMessage(
-                        context, modify, `Bot @bot_youtrack is error, ${context.getSender().username}!`);
+                    context, modify, `Bot @bot_youtrack is error, ${context.getSender().username}!`);
             case 'status':
                 this.res = await http.get(`${ this.hostYoutrackPM }/youtrack_status?id=${ context.getSender().id }`);
                 if (this.res.statusCode === 200) {
@@ -83,29 +65,23 @@ export class YoutrackPmAppCommand implements ISlashCommand {
                 }
                 return await this.sendNotifyMessage(
                     context, modify, `Bot @bot_youtrack is error, ${context.getSender().username}!`);
+            case 'token':
+                await http.post(`${ this.hostYoutrackPM }/set_youtrack_token`,
+                    {params: {token: context.getArguments()[1], id: context.getSender().id }});
+                return await this.sendNotifyMessage(
+                    context, modify, `Bot @bot_youtrack token is set, ${ context.getSender().username }!`);
             default:
-                if (context.getArguments()[0].toLowerCase() === 'token') {
-                    await persis.removeByAssociation(assoc);
-                    await http.post(
-                        `${ this.hostYoutrackPM }/set_youtrack_token`,
-                        {params: {token: context.getArguments()[1], id: context.getSender().id }}
-                        );
-                    return await this.sendNotifyMessage(
-                        context, modify, `Bot @bot_youtrack token is set, ${ context.getSender().username }!`);
-                } else {
-                    return await this.sendNotifyMessage(context, modify,
-                        'No idea what you are talking about. ' +
-                        'Only `start`, `stop`, `status` and `token` are accepted options for the first argument.');
-                }
+                return await this.sendNotifyMessage(context, modify,
+                    'No idea what you are talking about. ' +
+                    'Only `start`, `stop`, `status` and `token` are accepted options for the first argument.');
         }
     }
 
     // tslint:disable-next-line:max-line-length
     private async handleWithCustomMessage(context: SlashCommandContext, read: IRead, modify: IModify, http: IHttp, persis: IPersistence): Promise<void> {
         const action = context.getArguments()[0].toLowerCase();
-        console.log(action);
 
-        if (action === 'start' || action === 'stop' || action === 'issue_start' || action === 'issue_stop' || action === 'status' || action === 'token') {
+        if (action === 'start' || action === 'stop' || action === 'status' || action === 'token') {
             return await this.handleStatusArgOnly(context, read, modify, http, persis);
         } else if (action !== 'token') {
             return await this.sendNotifyMessage(context, modify,
